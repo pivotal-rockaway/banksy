@@ -42,6 +42,13 @@ public class AccountBalanceTest {
     }
 
     @Test
+    public void creatingAccountReturns201() throws IOException {
+        String newUserPayload = readResourceIntoString("/users/user.json");
+        ClientResponse newUserResponse = createAccount(newUserPayload);
+        assertThat(newUserResponse.getStatus(), equalTo(ClientResponse.Status.CREATED.getStatusCode()));
+    }
+
+    @Test
     public void viewingAccountBalanceWithoutAuthorizationReturns401() {
         WebResource balanceEndpoint = createEndpointClient("/accounts/balance");
         ClientResponse response = balanceEndpoint.get(ClientResponse.class);
@@ -50,20 +57,29 @@ public class AccountBalanceTest {
 
     @Test
     public void viewingAccountBalanceAfterSignUpReturnsZeroBalance() throws IOException {
-        WebResource accountsEndpoint = createEndpointClient("/accounts");
         String newUserPayload = readResourceIntoString("/users/user.json");
-        ClientResponse newUserResponse = accountsEndpoint.type(MediaType.APPLICATION_JSON)
-                .post(ClientResponse.class, newUserPayload);
-        assertThat(newUserResponse.getStatus(), equalTo(ClientResponse.Status.CREATED.getStatusCode()));
-        WebResource balanceEndpoint = createEndpointClient("/accounts/balance");
-        ClientResponse getBalanceResponse = balanceEndpoint.accept(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Basic Ym9iQGVtYWlscHJvdmlkZXIuY29tOnN0cm9uZ3Bhc3N3b3Jk")
-                .get(ClientResponse.class);
+        createAccount(newUserPayload);
+
+        String basicAuthHeader = "Basic Ym9iQGVtYWlscHJvdmlkZXIuY29tOnN0cm9uZ3Bhc3N3b3Jk";
+        ClientResponse getBalanceResponse = getBalance(basicAuthHeader);
+
         assertThat(getBalanceResponse.getStatus(), equalTo(ClientResponse.Status.OK.getStatusCode()));
         String getBalanceResponseBody = getBalanceResponse.getEntity(String.class);
-        System.out.println(getBalanceResponseBody);
         GetBalanceResponse getBalanceResponseObject = gson.fromJson(getBalanceResponseBody, GetBalanceResponse.class);
         assertThat(getBalanceResponseObject.getBalance(), equalTo(0L));
+    }
+
+    private ClientResponse getBalance(String basicAuthHeader) {
+        WebResource balanceEndpoint = createEndpointClient("/accounts/balance");
+        return balanceEndpoint.accept(MediaType.APPLICATION_JSON)
+                    .header("Authorization", basicAuthHeader)
+                    .get(ClientResponse.class);
+    }
+
+    private ClientResponse createAccount(String newUserPayload) {
+        WebResource accountsEndpoint = createEndpointClient("/accounts");
+        return accountsEndpoint.type(MediaType.APPLICATION_JSON)
+                .post(ClientResponse.class, newUserPayload);
     }
 
     private WebResource createEndpointClient(String path) {
