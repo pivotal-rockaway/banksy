@@ -2,7 +2,6 @@ package io.pivotal.payup;
 
 import io.pivotal.payup.persistence.UserAccountRepository;
 import io.pivotal.payup.services.AccountService;
-import io.pivotal.payup.web.auth.BasicAuth;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -21,11 +20,6 @@ public class Application {
     @Bean
     public AccountService accountService(UserAccountRepository userAccountRepository) {
         return new AccountService(userAccountRepository);
-    }
-
-    @Bean
-    public BasicAuth basicAuth() {
-        return new BasicAuth();
     }
 
 }

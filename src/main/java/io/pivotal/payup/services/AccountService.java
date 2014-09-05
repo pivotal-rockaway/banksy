@@ -1,6 +1,5 @@
 package io.pivotal.payup.services;
 
-import io.pivotal.payup.domain.UnauthorisedAccountAccessException;
 import io.pivotal.payup.domain.UserAccount;
 import io.pivotal.payup.persistence.UserAccountRepository;
 
@@ -12,18 +11,13 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public void createUserAccount(String username, String password) {
-        UserAccount account = new UserAccount(username, password);
+    public void createUserAccount(String username) {
+        UserAccount account = new UserAccount(username);
         accountRepository.save(account);
     }
 
-    public long getBalance(String username, String password) throws UnauthorisedAccountAccessException {
+    public long getBalance(String username) {
         UserAccount userAccount = accountRepository.findOne(username);
-        if (userAccount != null) {
-            return userAccount.getBalance(password);
-        }
-        else {
-            throw new UnauthorisedAccountAccessException("User " + username + " does not exist");
-        }
+        return userAccount.getBalance();
     }
 }
