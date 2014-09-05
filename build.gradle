@@ -25,4 +25,5 @@ dependencies {
     testCompile 'org.springframework.boot:spring-boot-starter-test:1.1.6.RELEASE'
     testCompile 'com.google.code.gson:gson:2.3'
     testCompile 'com.sun.jersey:jersey-client:1.18.1'
+    testCompile 'commons-io:commons-io:2.4'
 }
