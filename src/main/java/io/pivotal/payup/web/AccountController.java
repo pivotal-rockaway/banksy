@@ -1,6 +1,7 @@
 package io.pivotal.payup.web;
 
 import com.google.gson.Gson;
+import io.pivotal.payup.domain.UnauthorisedAccountAccessException;
 import io.pivotal.payup.services.AccountService;
 import io.pivotal.payup.web.auth.BasicAuth;
 import io.pivotal.payup.web.auth.Credentials;
@@ -34,11 +35,16 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         Credentials credentials = basicAuth.decode(basicAuthHeader);
-        long balance = accountService.getBalance(credentials.getUsername(), credentials.getPassword());
-        Map<String, Long> balanceMap = new HashMap<>();
-        balanceMap.put("balance", balance);
-        String balanceResponseJson = gson.toJson(balanceMap);
-        return new ResponseEntity<>(balanceResponseJson, HttpStatus.OK);
+        try {
+            long balance = accountService.getBalance(credentials.getUsername(), credentials.getPassword());
+            Map<String, Long> balanceMap = new HashMap<>();
+            balanceMap.put("balance", balance);
+            String balanceResponseJson = gson.toJson(balanceMap);
+            return new ResponseEntity<>(balanceResponseJson, HttpStatus.OK);
+        }
+        catch (UnauthorisedAccountAccessException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST)

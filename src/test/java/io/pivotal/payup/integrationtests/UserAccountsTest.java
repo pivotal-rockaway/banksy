@@ -27,7 +27,7 @@ import static org.junit.Assert.assertThat;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class AccountBalanceTest {
+public class UserAccountsTest {
 
     @Value("${local.server.port}")
     private int port;
@@ -69,11 +69,17 @@ public class AccountBalanceTest {
         assertThat(getBalanceResponseObject.getBalance(), equalTo(0L));
     }
 
+    @Test
+    public void viewingAccountBalanceWithNonExistentUsernameReturns403() {
+        ClientResponse getBalanceResponse = getBalance("Basic Ym9iQGVtYWlscHJvdmlkZXIuY29tOnN0cm9uZ3Bhc3N3b3Jk");
+        assertThat(getBalanceResponse.getStatus(), equalTo(ClientResponse.Status.FORBIDDEN.getStatusCode()));
+    }
+
     private ClientResponse getBalance(String basicAuthHeader) {
         WebResource balanceEndpoint = createEndpointClient("/accounts/balance");
         return balanceEndpoint.accept(MediaType.APPLICATION_JSON)
-                    .header("Authorization", basicAuthHeader)
-                    .get(ClientResponse.class);
+                .header("Authorization", basicAuthHeader)
+                .get(ClientResponse.class);
     }
 
     private ClientResponse createAccount(String newUserPayload) {

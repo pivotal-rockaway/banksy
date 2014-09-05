@@ -1,5 +1,6 @@
 package io.pivotal.payup.services;
 
+import io.pivotal.payup.domain.UnauthorisedAccountAccessException;
 import io.pivotal.payup.domain.UserAccount;
 import io.pivotal.payup.persistence.UserAccountRepository;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.mockito.Mockito;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,7 +41,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void shouldRetrieveBalanceOfUserAccount() {
+    public void shouldRetrieveBalanceOfUserAccount() throws UnauthorisedAccountAccessException {
         String username = "someuser@mail.com";
         String password = "strongpassword";
         when(accountRepository.findOne(username))
@@ -49,5 +51,13 @@ public class AccountServiceTest {
         assertThat(balance, equalTo(0L));
 
         verify(accountRepository).findOne(username);
+    }
+
+    @Test(expected = UnauthorisedAccountAccessException.class)
+    public void shouldThrowExceptionWhenUsernameDoesNotExist() throws UnauthorisedAccountAccessException {
+        when(accountRepository.findOne(any()))
+                .thenReturn(null);
+
+        service.getBalance("some user", "some password");
     }
 }
