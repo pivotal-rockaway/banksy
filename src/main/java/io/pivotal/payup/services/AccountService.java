@@ -20,7 +20,7 @@ public class AccountService {
     public long getBalance(String username, String password) throws UnauthorisedAccountAccessException {
         UserAccount userAccount = accountRepository.findOne(username);
         if (userAccount != null) {
-            return userAccount.getBalance();
+            return userAccount.getBalance(password);
         }
         else {
             throw new UnauthorisedAccountAccessException("User " + username + " does not exist");

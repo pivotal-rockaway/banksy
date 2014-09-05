@@ -27,7 +27,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void shouldCreateUserAccountWithZeroBalance() {
+    public void shouldCreateUserAccountWithZeroBalance() throws UnauthorisedAccountAccessException {
         String username = "Alice";
         String password = "gr8P$!sswΩrd";
 
@@ -37,7 +37,7 @@ public class AccountServiceTest {
         verify(accountRepository).save(createdUserAccount.capture());
         assertThat(createdUserAccount.getValue().getUsername(), equalTo(username));
         assertThat(createdUserAccount.getValue().getPassword(), not(equalTo(password)));
-        assertThat(createdUserAccount.getValue().getBalance(), equalTo(0L));
+        assertThat(createdUserAccount.getValue().getBalance(password), equalTo(0L));
     }
 
     @Test
@@ -59,5 +59,15 @@ public class AccountServiceTest {
                 .thenReturn(null);
 
         service.getBalance("some user", "some password");
+    }
+
+    @Test(expected = UnauthorisedAccountAccessException.class)
+    public void shouldThrowExceptionWhenPasswordIsWrong() throws UnauthorisedAccountAccessException {
+        String username = "some user";
+        String password = "some password";
+        when(accountRepository.findOne(username))
+                .thenReturn(new UserAccount(username, password));
+
+        service.getBalance(username, "wrong password");
     }
 }

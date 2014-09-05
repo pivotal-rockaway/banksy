@@ -18,9 +18,15 @@ public class UserAccountTest {
     }
 
     @Test
-    public void newAccountsShouldHaveZeroBalance() {
+    public void newAccountsShouldHaveZeroBalance() throws UnauthorisedAccountAccessException {
         UserAccount account = new UserAccount("someusername", "somepassword");
-        assertThat(account.getBalance(), equalTo(0L));
+        assertThat(account.getBalance("somepassword"), equalTo(0L));
+    }
+
+    @Test(expected = UnauthorisedAccountAccessException.class)
+    public void shouldThrowExceptionWhenFetchingBalanceWithWrongPassword() throws UnauthorisedAccountAccessException {
+        UserAccount account = new UserAccount("someusername", "somepassword");
+        account.getBalance("wrongpassword");
     }
 
 }

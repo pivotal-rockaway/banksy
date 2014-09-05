@@ -75,6 +75,14 @@ public class UserAccountsTest {
         assertThat(getBalanceResponse.getStatus(), equalTo(ClientResponse.Status.FORBIDDEN.getStatusCode()));
     }
 
+    @Test
+    public void viewingAccountBalanceWithWrongPasswordReturns403() throws IOException {
+        createAccount(readResourceIntoString("/users/user.json"));
+
+        ClientResponse getBalanceResponse = getBalance("Basic Ym9iQGVtYWlscHJvdmlkZXIuY29tOndyb25ncGFzc3dvcmQ=");
+        assertThat(getBalanceResponse.getStatus(), equalTo(ClientResponse.Status.FORBIDDEN.getStatusCode()));
+    }
+
     private ClientResponse getBalance(String basicAuthHeader) {
         WebResource balanceEndpoint = createEndpointClient("/accounts/balance");
         return balanceEndpoint.accept(MediaType.APPLICATION_JSON)

@@ -37,7 +37,12 @@ public class UserAccount {
         return password;
     }
 
-    public long getBalance() {
-        return balance;
+    public long getBalance(String password) throws UnauthorisedAccountAccessException {
+        if (BCrypt.checkpw(password, this.password)) {
+            return balance;
+        }
+        else {
+            throw new UnauthorisedAccountAccessException("Wrong password for user " + username);
+        }
     }
 }
