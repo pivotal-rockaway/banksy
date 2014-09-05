@@ -2,6 +2,7 @@ package io.pivotal.payup.web;
 
 import com.google.gson.Gson;
 import io.pivotal.payup.domain.UnauthorisedAccountAccessException;
+import io.pivotal.payup.json.GetBalanceResponse;
 import io.pivotal.payup.services.AccountService;
 import io.pivotal.payup.web.auth.BasicAuth;
 import io.pivotal.payup.web.auth.Credentials;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -37,9 +37,7 @@ public class AccountController {
         Credentials credentials = basicAuth.decode(basicAuthHeader);
         try {
             long balance = accountService.getBalance(credentials.getUsername(), credentials.getPassword());
-            Map<String, Long> balanceMap = new HashMap<>();
-            balanceMap.put("balance", balance);
-            String balanceResponseJson = gson.toJson(balanceMap);
+            String balanceResponseJson = gson.toJson(new GetBalanceResponse(balance));
             return new ResponseEntity<>(balanceResponseJson, HttpStatus.OK);
         }
         catch (UnauthorisedAccountAccessException e) {
