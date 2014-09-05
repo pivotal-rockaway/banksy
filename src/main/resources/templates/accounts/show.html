@@ -1,16 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet"
+          th:href="@{/css/bootstrap.min.css}"
+          href="../../css/bootstrap.min.css"/>
     <title>My splendid App</title>
 </head>
 <body>
-<h1>Account</h1>
-<dl>
-    <dt>Username</dt>
-    <dd th:text="${account.username}"></dd>
-    <dt>Balance</dt>
-    <dd th:text="${account.balance}"></dd>
-</dl>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>Account</h1>
+            <dl>
+                <dt>Username</dt>
+                <dd th:text="${account.username}"></dd>
+                <dt>Balance</dt>
+                <dd th:text="${account.balance}"></dd>
+            </dl>
+        </div>
+    </div>
+</div>
 </body>
 </html>
