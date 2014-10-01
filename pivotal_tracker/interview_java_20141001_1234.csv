@@ -1,0 +1,13 @@
+Id,Title,Labels,Iteration,Iteration Start,Iteration End,Type,Estimate,Current State,Created at,Accepted at,Deadline,Requested By,Description,URL,Owned By
+78257212,As an app user I can top up my account balance,"",1,"Sep 29, 2014","Oct 5, 2014",feature,2,unstarted,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78257212,Craig Furman
+78362594,as a user I can see a list of my accounts,"",1,"Sep 29, 2014","Oct 5, 2014",feature,2,unstarted,"Sep 8, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78362594,Craig Furman
+78257094,As an app user I can view my account balance,"",1,"Sep 29, 2014","Oct 5, 2014",feature,2,unstarted,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78257094,Craig Furman
+78257196,as a user I can create an account,"",1,"Sep 29, 2014","Oct 5, 2014",feature,2,unstarted,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78257196,Craig Furman
+78257220,As an app user I can draw down my funds,"",1,"Sep 29, 2014","Oct 5, 2014",feature,,unstarted,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78257220,
+78257144,As an app user I can transfer money to another account,"",1,"Sep 29, 2014","Oct 5, 2014",feature,,unstarted,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78257144,
+78257364,DB Schema migrations should be possible,"",,,,chore,,unscheduled,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78257364,
+78257274,As an app user I should be able to top up my account balance and send the money to another user in the same transaction,"",,,,feature,,unscheduled,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78257274,
+78257160,As an app user I can view my transaction history,"",,,,feature,,unscheduled,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78257160,
+78257254,As an app user I should not be able to put my account into negative balance,"",,,,feature,,unscheduled,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78257254,
+78267774,As an app user I can send money in currencies other than my own,"",,,,feature,,unscheduled,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78267774,
+78266142,As an app user I want my account to be accessible only by me,"",,,,feature,2,unscheduled,"Sep 5, 2014",,,Craig Furman,,https://www.pivotaltracker.com/story/show/78266142,Craig Furman
