@@ -3,3 +3,7 @@
 *.iml
 build
 target
+/.eclipse/
+/.settings/
+/.classpath
+/.project
