@@ -16,8 +16,7 @@ public class UserAccount {
         this.balance = 0;
     }
 
-    //    Needed for Spring JPA
-    @SuppressWarnings("UnusedDeclaration")
+    /** Needed for Spring JPA */
     protected UserAccount() {
     }
 
@@ -28,4 +27,5 @@ public class UserAccount {
     public long getBalance() {
         return balance;
     }
+
 }

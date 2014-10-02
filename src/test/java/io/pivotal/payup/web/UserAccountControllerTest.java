@@ -12,7 +12,6 @@ import static org.junit.Assert.assertThat;
 
 public class UserAccountControllerTest {
 
-
     private AccountService service;
     private UserAccountController controller;
     private String username;
@@ -41,4 +40,5 @@ public class UserAccountControllerTest {
         assertThat(account.getUsername(), equalTo(username));
         assertThat(account.getBalance(), equalTo(0L));
     }
+
 }

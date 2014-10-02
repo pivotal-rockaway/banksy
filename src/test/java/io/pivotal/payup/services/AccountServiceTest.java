@@ -38,12 +38,12 @@ public class AccountServiceTest {
     @Test
     public void shouldRetrieveBalanceOfUserAccount() {
         String username = "someuser@mail.com";
-        when(accountRepository.findOne(username))
-                .thenReturn(new UserAccount(username));
+        when(accountRepository.findOne(username)).thenReturn(new UserAccount(username));
 
         long balance = service.getBalance(username);
         assertThat(balance, equalTo(0L));
 
         verify(accountRepository).findOne(username);
     }
+
 }

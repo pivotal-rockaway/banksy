@@ -1,6 +1,7 @@
 package io.pivotal.payup.web.view;
 
 public class Account {
+
     private String username;
     private long balance;
 
@@ -16,4 +17,5 @@ public class Account {
     public long getBalance() {
         return balance;
     }
+
 }

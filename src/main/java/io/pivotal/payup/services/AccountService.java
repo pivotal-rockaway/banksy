@@ -20,4 +20,5 @@ public class AccountService {
         UserAccount userAccount = accountRepository.findOne(username);
         return userAccount.getBalance();
     }
+
 }

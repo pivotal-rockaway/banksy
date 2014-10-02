@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-
 @Controller
 @RequestMapping("/accounts")
 public class UserAccountController {
@@ -40,4 +39,5 @@ public class UserAccountController {
         long balance = accountService.getBalance(username);
         return new ModelAndView("accounts/show", "account", new Account(username, balance));
     }
+
 }

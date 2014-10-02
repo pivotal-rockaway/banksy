@@ -29,8 +29,7 @@ public class UserAccountsTest {
 
     @Test
     public void shouldShowNewUserForm() {
-        ResponseEntity<String> getNewAccountResponse = new TestRestTemplate()
-                .getForEntity(urlForEndpoint("/accounts/new"), String.class);
+        ResponseEntity<String> getNewAccountResponse = new TestRestTemplate().getForEntity(urlForEndpoint("/accounts/new"), String.class);
         assertThat(getNewAccountResponse.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(getNewAccountResponse.getBody(), containsString("New account"));
     }
