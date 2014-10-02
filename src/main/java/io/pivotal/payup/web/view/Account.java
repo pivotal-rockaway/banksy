@@ -2,16 +2,16 @@ package io.pivotal.payup.web.view;
 
 public class Account {
 
-    private String username;
+    private String name;
     private long balance;
 
-    public Account(String username, long balance) {
-        this.username = username;
+    public Account(String name, long balance) {
+        this.name = name;
         this.balance = balance;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public long getBalance() {

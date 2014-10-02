@@ -14,30 +14,30 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @RequestMapping("/accounts")
-public class UserAccountController {
+public class AccountController {
 
     private final AccountService accountService;
 
     @Autowired
-    public UserAccountController(AccountService accountService) {
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
     @RequestMapping(value = "new", method = GET)
-    public String newUserAccountForm() {
+    public String newAccountForm() {
         return "accounts/new";
     }
 
     @RequestMapping(method = POST)
-    public ModelAndView createUser(@RequestParam String username) {
-        accountService.createUserAccount(username);
-        return new ModelAndView("redirect:/accounts/" + username);
+    public ModelAndView createAccount(@RequestParam String name) {
+        accountService.createAccount(name);
+        return new ModelAndView("redirect:/accounts/" + name);
     }
 
-    @RequestMapping(method = GET, value = "{username}")
-    public ModelAndView showUser(@PathVariable String username) {
-        long balance = accountService.getBalance(username);
-        return new ModelAndView("accounts/show", "account", new Account(username, balance));
+    @RequestMapping(method = GET, value = "{name}")
+    public ModelAndView showAccount(@PathVariable String name) {
+        long balance = accountService.getBalance(name);
+        return new ModelAndView("accounts/show", "account", new Account(name, balance));
     }
 
 }

@@ -5,11 +5,11 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class UserAccountTest {
+public class AccountTest {
 
     @Test
     public void newAccountsShouldHaveZeroBalance() {
-        UserAccount account = new UserAccount("someusername");
+        Account account = new Account("someaccountname");
         assertThat(account.getBalance(), equalTo(0L));
     }
 

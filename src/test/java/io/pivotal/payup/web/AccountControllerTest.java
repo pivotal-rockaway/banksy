@@ -10,34 +10,34 @@ import org.springframework.web.servlet.ModelAndView;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class UserAccountControllerTest {
+public class AccountControllerTest {
 
     private AccountService service;
-    private UserAccountController controller;
-    private String username;
+    private AccountController controller;
+    private String name;
 
     @Before
     public void setUp() throws Exception {
         service = Mockito.mock(AccountService.class);
-        controller = new UserAccountController(service);
-        username = "big_dave";
+        controller = new AccountController(service);
+        name = "Savings";
     }
 
     @Test
-    public void shouldRedirectToAccountDetailPageWhenUserCreated() {
-        ModelAndView modelAndView = controller.createUser(username);
+    public void shouldRedirectToAccountDetailPageWhenAccountCreated() {
+        ModelAndView modelAndView = controller.createAccount(name);
 
-        assertThat(modelAndView.getViewName(), equalTo("redirect:/accounts/big_dave"));
-        Mockito.verify(service).createUserAccount(username);
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/accounts/Savings"));
+        Mockito.verify(service).createAccount(name);
     }
 
     @Test
-    public void shouldShowUser() {
-        ModelAndView modelAndView = controller.showUser(username);
+    public void shouldShowAccount() {
+        ModelAndView modelAndView = controller.showAccount(name);
 
         assertThat(modelAndView.getViewName(), equalTo("accounts/show"));
         Account account = (Account) modelAndView.getModel().get("account");
-        assertThat(account.getUsername(), equalTo(username));
+        assertThat(account.getName(), equalTo(name));
         assertThat(account.getBalance(), equalTo(0L));
     }
 

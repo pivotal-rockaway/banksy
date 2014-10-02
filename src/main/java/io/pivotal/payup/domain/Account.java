@@ -4,24 +4,24 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class UserAccount {
+public class Account {
 
     @Id
-    private String username;
+    private String name;
 
     private long balance;
 
-    public UserAccount(String username) {
-        this.username = username;
+    public Account(String name) {
+        this.name = name;
         this.balance = 0;
     }
 
     /** Needed for Spring JPA */
-    protected UserAccount() {
+    protected Account() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public long getBalance() {

@@ -1,7 +1,7 @@
 package io.pivotal.payup.services;
 
-import io.pivotal.payup.domain.UserAccount;
-import io.pivotal.payup.persistence.UserAccountRepository;
+import io.pivotal.payup.domain.Account;
+import io.pivotal.payup.persistence.AccountRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -14,36 +14,36 @@ import static org.mockito.Mockito.when;
 
 public class AccountServiceTest {
 
-    private UserAccountRepository accountRepository;
+    private AccountRepository accountRepository;
     private AccountService service;
 
     @Before
     public void setUp() {
-        accountRepository = Mockito.mock(UserAccountRepository.class);
+        accountRepository = Mockito.mock(AccountRepository.class);
         service = new AccountService(accountRepository);
     }
 
     @Test
-    public void shouldCreateUserAccountWithZeroBalance() {
-        String username = "Alice";
+    public void shouldCreateAccountWithZeroBalance() {
+        String name = "Savings";
 
-        service.createUserAccount(username);
+        service.createAccount(name);
 
-        ArgumentCaptor<UserAccount> createdUserAccount = ArgumentCaptor.forClass(UserAccount.class);
-        verify(accountRepository).save(createdUserAccount.capture());
-        assertThat(createdUserAccount.getValue().getUsername(), equalTo(username));
-        assertThat(createdUserAccount.getValue().getBalance(), equalTo(0L));
+        ArgumentCaptor<Account> createdAccount = ArgumentCaptor.forClass(Account.class);
+        verify(accountRepository).save(createdAccount.capture());
+        assertThat(createdAccount.getValue().getName(), equalTo(name));
+        assertThat(createdAccount.getValue().getBalance(), equalTo(0L));
     }
 
     @Test
-    public void shouldRetrieveBalanceOfUserAccount() {
-        String username = "someuser@mail.com";
-        when(accountRepository.findOne(username)).thenReturn(new UserAccount(username));
+    public void shouldRetrieveBalanceOfAccount() {
+        String name = "Rent and bills";
+        when(accountRepository.findOne(name)).thenReturn(new Account(name));
 
-        long balance = service.getBalance(username);
+        long balance = service.getBalance(name);
         assertThat(balance, equalTo(0L));
 
-        verify(accountRepository).findOne(username);
+        verify(accountRepository).findOne(name);
     }
 
 }
