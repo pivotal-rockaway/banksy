@@ -30,4 +30,4 @@ dependencies {
 }
 
 apply plugin: 'eclipse'
-eclipse.defaultOutputDir = file('.eclipse')
+eclipse.classpath.defaultOutputDir = file('.eclipse')
