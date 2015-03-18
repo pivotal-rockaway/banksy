@@ -4,31 +4,33 @@ import io.pivotal.payup.services.AccountService;
 import io.pivotal.payup.web.view.Account;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest {
 
-    private AccountService service;
+    @Mock private AccountService service;
     private AccountController controller;
-    private String name;
+    private final String name = "Savings";
 
     @Before
     public void setUp() throws Exception {
-        service = Mockito.mock(AccountService.class);
         controller = new AccountController(service);
-        name = "Savings";
     }
 
     @Test
     public void shouldRedirectToAccountDetailPageWhenAccountCreated() {
-        ModelAndView modelAndView = controller.createAccount(name);
+        String viewName = controller.createAccount(name);
 
-        assertThat(modelAndView.getViewName(), equalTo("redirect:/accounts/Savings"));
-        Mockito.verify(service).createAccount(name);
+        assertThat(viewName, equalTo("redirect:/accounts/Savings"));
+        verify(service).createAccount(name);
     }
 
     @Test

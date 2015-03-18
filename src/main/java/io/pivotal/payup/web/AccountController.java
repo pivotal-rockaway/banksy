@@ -29,9 +29,9 @@ public class AccountController {
     }
 
     @RequestMapping(method = POST)
-    public ModelAndView createAccount(@RequestParam String name) {
+    public String createAccount(@RequestParam String name) {
         accountService.createAccount(name);
-        return new ModelAndView("redirect:/accounts/" + name);
+        return "redirect:/accounts/" + name;
     }
 
     @RequestMapping(method = GET, value = "{name}")
