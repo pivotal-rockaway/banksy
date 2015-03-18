@@ -22,15 +22,14 @@ import static org.junit.Assert.assertThat;
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
 @DirtiesContext
-public class UserAccountsTest {
+public class AccountsTest {
 
     @Value("${local.server.port}")
     private int port;
 
     @Test
-    public void shouldShowNewUserForm() {
-        ResponseEntity<String> getNewAccountResponse = new TestRestTemplate()
-                .getForEntity(urlForEndpoint("/accounts/new"), String.class);
+    public void shouldShowNewAccountsForm() {
+        ResponseEntity<String> getNewAccountResponse = new TestRestTemplate().getForEntity(urlForEndpoint("/accounts/new"), String.class);
         assertThat(getNewAccountResponse.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(getNewAccountResponse.getBody(), containsString("New account"));
     }

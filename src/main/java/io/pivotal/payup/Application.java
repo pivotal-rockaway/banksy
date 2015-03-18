@@ -1,6 +1,6 @@
 package io.pivotal.payup;
 
-import io.pivotal.payup.persistence.UserAccountRepository;
+import io.pivotal.payup.persistence.AccountRepository;
 import io.pivotal.payup.services.AccountService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -18,8 +18,8 @@ public class Application {
     }
 
     @Bean
-    public AccountService accountService(UserAccountRepository userAccountRepository) {
-        return new AccountService(userAccountRepository);
+    public AccountService accountService(AccountRepository accountRepository) {
+        return new AccountService(accountRepository);
     }
 
 }

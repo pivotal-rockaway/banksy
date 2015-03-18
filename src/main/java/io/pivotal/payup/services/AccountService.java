@@ -1,23 +1,24 @@
 package io.pivotal.payup.services;
 
-import io.pivotal.payup.domain.UserAccount;
-import io.pivotal.payup.persistence.UserAccountRepository;
+import io.pivotal.payup.domain.Account;
+import io.pivotal.payup.persistence.AccountRepository;
 
 public class AccountService {
 
-    private final UserAccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-    public AccountService(UserAccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
-    public void createUserAccount(String username) {
-        UserAccount account = new UserAccount(username);
+    public void createAccount(String name) {
+        Account account = new Account(name);
         accountRepository.save(account);
     }
 
-    public long getBalance(String username) {
-        UserAccount userAccount = accountRepository.findOne(username);
-        return userAccount.getBalance();
+    public long getBalance(String name) {
+        Account account = accountRepository.findOne(name);
+        return account.getBalance();
     }
+
 }
