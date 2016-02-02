@@ -56,4 +56,16 @@ public class AccountControllerTest {
         assertThat(account.getName(), equalTo(name));
         assertThat(account.getBalance(), equalTo(200L));
     }
+
+    @Test
+    public void shouldWithdrawAmount(){
+        when(service.getBalance("Savings")).thenReturn(20L);
+
+        ModelAndView modelAndView = controller.withdrawAmount(name, "200");
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/accounts/Savings"));
+        verify(service).withdrawAmount(name, 200L);
+        Account account = (Account) modelAndView.getModel().get("account");
+        assertThat(account.getName(),equalTo(name));
+        assertThat(account.getBalance(),equalTo(20L));
+    }
 }

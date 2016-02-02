@@ -46,4 +46,11 @@ public class AccountController {
         long balance = accountService.getBalance(name);
         return new ModelAndView("redirect:/accounts/" + name, "account", new Account(name, balance));
     }
+
+    @RequestMapping(method = POST, value = "/{name}/withdraw")
+    public  ModelAndView withdrawAmount(@PathVariable String name, @RequestParam String amount){
+        accountService.withdrawAmount(name, Long.parseLong(amount));
+        long balance = accountService.getBalance(name);
+        return new ModelAndView("redirect:/accounts/" + name, "account", new Account(name, balance));
+    }
 }

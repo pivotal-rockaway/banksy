@@ -51,7 +51,7 @@ public class AccountsTest extends FluentTest {
     }
 
     @Test
-    public void shouldShowDepositForm(){
+    public void shouldDepositAmountToAccount(){
         goTo(baseUrl + "/accounts/new");
         fill("#newAccountName").with("Nick");
         click("button");
@@ -62,6 +62,18 @@ public class AccountsTest extends FluentTest {
         fill("#depositAmount").with("150");
         click("button");
         assertThat(find("dd", withText("350")), not(empty()));
+    }
+
+    @Test
+    public void shouldWithdrawAmountFromAccount(){
+        goTo(baseUrl + "/accounts/new");
+        fill("#newAccountName").with("Nick");
+        click("button");
+        fill("#depositAmount").with("200");
+        find("button", withText("Deposit")).click();
+        fill("#withdrawAmount").with("20");
+        find("button", withText("Withdraw")).click();
+        assertThat(find("dd",withText("180")),not(empty()));
     }
 
     @Override

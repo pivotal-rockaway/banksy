@@ -31,4 +31,9 @@ public class AccountService {
         return accountRepository.findOne(name);
     }
 
+    public void withdrawAmount(String name, long amount) {
+        Account account =accountRepository.findOne(name);
+        account.setBalance(account.getBalance() - amount);
+        accountRepository.save(account);
+    }
 }

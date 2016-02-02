@@ -67,4 +67,16 @@ public class AccountServiceTest {
         when(accountRepository.findOne("Salary")).thenReturn(account);
         assertThat(service.getAccount("Salary"), equalTo(account));
     }
+
+    @Test
+    public void shouldWithdrawAmountFromAccount(){
+        Account account = new Account("Salary");
+        when(accountRepository.findOne("Salary")).thenReturn(account);
+
+        service.depositAmount("Salary", 2000L);
+        service.withdrawAmount("Salary", 100L);
+
+        assertThat(service.getBalance("Salary"), equalTo(1900L));
+        verify(accountRepository, times(2)).save(account);
+    }
 }
