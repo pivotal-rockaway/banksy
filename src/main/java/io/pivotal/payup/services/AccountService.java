@@ -21,4 +21,14 @@ public class AccountService {
         return account.getBalance();
     }
 
+    public void depositAmount(String name, long amount) {
+        Account account = accountRepository.findOne(name);
+        account.setBalance(account.getBalance() + amount);
+        accountRepository.save(account);
+    }
+
+    public Account getAccount(String name) {
+        return accountRepository.findOne(name);
+    }
+
 }

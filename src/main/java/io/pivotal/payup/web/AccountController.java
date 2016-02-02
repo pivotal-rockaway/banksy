@@ -34,10 +34,16 @@ public class AccountController {
         return "redirect:/accounts/" + name;
     }
 
-    @RequestMapping(method = GET, value = "{name}")
+    @RequestMapping(method = GET, value = "/{name}")
     public ModelAndView showAccount(@PathVariable String name) {
         long balance = accountService.getBalance(name);
         return new ModelAndView("accounts/show", "account", new Account(name, balance));
     }
 
+    @RequestMapping(method = POST, value = "/{name}/deposit")
+    public ModelAndView depositAmount(@PathVariable String name, @RequestParam String amount){
+        accountService.depositAmount(name, Long.parseLong(amount));
+        long balance = accountService.getBalance(name);
+        return new ModelAndView("redirect:/accounts/" + name, "account", new Account(name, balance));
+    }
 }

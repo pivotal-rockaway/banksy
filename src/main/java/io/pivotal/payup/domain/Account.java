@@ -16,6 +16,10 @@ public class Account {
         this.balance = 0;
     }
 
+    public void setBalance(long balance) {
+        this.balance = balance;
+    }
+
     /** Needed for Spring JPA */
     protected Account() {
     }

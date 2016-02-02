@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
+
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -46,4 +48,23 @@ public class AccountServiceTest {
         verify(accountRepository).findOne(name);
     }
 
+    @Test
+    public void shouldAddBalanceToExistingAccount(){
+        Account account = new Account("Salary");
+        when(accountRepository.findOne("Salary")).thenReturn(account);
+
+        service.depositAmount("Salary", 50L);
+        assertThat(service.getBalance("Salary"), equalTo(50L));
+
+        service.depositAmount("Salary", 25L);
+        assertThat(service.getBalance("Salary"), equalTo(75L));
+        verify(accountRepository, times(2)).save(account);
+    }
+
+    @Test
+    public void shouldReturnExistingAccount(){
+        Account account = new Account("Salary");
+        when(accountRepository.findOne("Salary")).thenReturn(account);
+        assertThat(service.getAccount("Salary"), equalTo(account));
+    }
 }

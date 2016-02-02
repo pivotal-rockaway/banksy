@@ -11,7 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest {
@@ -43,4 +44,16 @@ public class AccountControllerTest {
         assertThat(account.getBalance(), equalTo(0L));
     }
 
+    @Test
+    public void shouldDepositAmount(){
+        when(service.getBalance("Savings")).thenReturn(200L);
+
+        ModelAndView modelAndView = controller.depositAmount(name, "200");
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/accounts/Savings"));
+        verify(service).depositAmount(name, 200L);
+
+        Account account = (Account) modelAndView.getModel().get("account");
+        assertThat(account.getName(), equalTo(name));
+        assertThat(account.getBalance(), equalTo(200L));
+    }
 }

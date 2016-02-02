@@ -13,4 +13,11 @@ public class AccountTest {
         assertThat(account.getBalance(), equalTo(0L));
     }
 
+    @Test
+    public void shouldUpdateBalance(){
+        Account account = new Account("Checking Account");
+        account.setBalance(65L);
+        assertThat(account.getBalance(), equalTo(65L));
+    }
+
 }
