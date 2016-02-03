@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class AccountTest {
+public class AccountViewTest {
 
     @Test
     public void newAccountsShouldHaveZeroBalance() {
@@ -15,7 +15,7 @@ public class AccountTest {
 
     @Test
     public void shouldUpdateBalance(){
-        Account account = new Account("Checking Account");
+        Account account = new Account("Checking AccountView");
         account.setBalance(65L);
         assertThat(account.getBalance(), equalTo(65L));
     }

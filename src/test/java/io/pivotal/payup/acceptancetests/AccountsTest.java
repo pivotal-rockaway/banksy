@@ -43,37 +43,57 @@ public class AccountsTest extends FluentTest {
 
     @Test
     public void shouldCreateANewAccount() throws Exception {
-        goTo(baseUrl + "/accounts/new");
-        fill("#newAccountName").with("Nick");
-        click("button");
+        createNewAccountWithName("Nick");
 
         assertThat(find("dd", withText("Nick")), not(empty()));
     }
 
     @Test
-    public void shouldDepositAmountToAccount(){
-        goTo(baseUrl + "/accounts/new");
-        fill("#newAccountName").with("Nick");
-        click("button");
+    public void shouldDepositAmountToAccount() {
+        createNewAccountWithName("Nick");
+
         fill("#depositAmount").with("200");
-        click("button");
+        find("button", withText("Deposit")).click();
         assertThat(find("dd", withText("200")), not(empty()));
 
         fill("#depositAmount").with("150");
-        click("button");
+        find("button", withText("Deposit")).click();
         assertThat(find("dd", withText("350")), not(empty()));
     }
 
     @Test
     public void shouldWithdrawAmountFromAccount(){
-        goTo(baseUrl + "/accounts/new");
-        fill("#newAccountName").with("Nick");
-        click("button");
+        createNewAccountWithName("Nick");
+
         fill("#depositAmount").with("200");
         find("button", withText("Deposit")).click();
         fill("#withdrawAmount").with("20");
         find("button", withText("Withdraw")).click();
-        assertThat(find("dd",withText("180")),not(empty()));
+
+        assertThat(find("dd",withText("180")), not(empty()));
+        find("button", withText("Deposit")).click();
+    }
+
+    @Test
+    public void shouldListAllAccounts(){
+        createNewAccountWithName("Checking 1");
+        createNewAccountWithName("Checking 2");
+        createNewAccountWithName("Checking 3");
+
+        goTo(baseUrl + "/accounts");
+
+        assertThat(find(".account", withText("Checking 1 0")), not(empty()));
+        assertThat(find(".account", withText("Checking 2 0")), not(empty()));
+        assertThat(find(".account", withText("Checking 3 0")), not(empty()));
+
+
+
+    }
+
+    private void createNewAccountWithName(String name) {
+        goTo(baseUrl + "/accounts/new");
+        fill("#newAccountName").with(name);
+        click("button");
     }
 
     @Override

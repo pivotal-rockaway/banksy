@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 
@@ -14,7 +17,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AccountServiceTest {
+public class AccountViewServiceTest {
 
     private AccountRepository accountRepository;
     private AccountService service;
@@ -78,5 +81,18 @@ public class AccountServiceTest {
 
         assertThat(service.getBalance("Salary"), equalTo(1900L));
         verify(accountRepository, times(2)).save(account);
+    }
+
+    @Test
+    public void shouldListAllAccounts(){
+        Account accountOne = new Account("Home");
+        Account accountTwo = new Account("Salary");
+        ArrayList<Account> accounts = new ArrayList<Account>();
+        accounts.add(accountOne);
+        accounts.add(accountTwo);
+
+        when(accountRepository.findAll()).thenReturn(accounts);
+
+        assertThat(service.getAllAccounts(), equalTo(accounts));
     }
 }

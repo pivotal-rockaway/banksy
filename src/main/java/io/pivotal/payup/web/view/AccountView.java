@@ -1,11 +1,11 @@
 package io.pivotal.payup.web.view;
 
-public class Account {
+public class AccountView {
 
     private String name;
     private long balance;
 
-    public Account(String name, long balance) {
+    public AccountView(String name, long balance) {
         this.name = name;
         this.balance = balance;
     }

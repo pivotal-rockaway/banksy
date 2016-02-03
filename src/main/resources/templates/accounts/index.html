@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorator="layouts/layout">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <p class="account" th:each="accountView : ${accounts}" th:text = "${accountView.name} +  '  ' + ${accountView.balance}"></p>
+    </div>
+</div>
+</body>
+</html>

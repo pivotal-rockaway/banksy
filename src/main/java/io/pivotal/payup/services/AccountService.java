@@ -3,6 +3,8 @@ package io.pivotal.payup.services;
 import io.pivotal.payup.domain.Account;
 import io.pivotal.payup.persistence.AccountRepository;
 
+import java.util.ArrayList;
+
 public class AccountService {
 
     private final AccountRepository accountRepository;
@@ -29,6 +31,10 @@ public class AccountService {
 
     public Account getAccount(String name) {
         return accountRepository.findOne(name);
+    }
+
+    public ArrayList<Account> getAllAccounts() {
+        return (ArrayList<Account>) accountRepository.findAll();
     }
 
     public void withdrawAmount(String name, long amount) {
