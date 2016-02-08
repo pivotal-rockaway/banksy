@@ -2,6 +2,7 @@ package io.pivotal.payup.acceptancetests;
 
 import io.pivotal.payup.Application;
 import org.fluentlenium.adapter.FluentTest;
+import org.fluentlenium.core.annotation.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,9 +15,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -85,9 +88,61 @@ public class AccountsTest extends FluentTest {
         assertThat(find(".account", withText("Checking 1 0")), not(empty()));
         assertThat(find(".account", withText("Checking 2 0")), not(empty()));
         assertThat(find(".account", withText("Checking 3 0")), not(empty()));
+        assertThat(find("a", withText("Transfer Funds")), not(empty()));
 
+    }
 
+    @Test
+    public void shouldTransferBetweenAccounts(){
+        createNewAccountWithName("Checking 1");
+        fill("#depositAmount").with("2000");
+        find("button", withText("Deposit")).click();
+        createNewAccountWithName("Checking 2");
+        fill("#depositAmount").with("4000");
+        find("button", withText("Deposit")).click();
 
+        goTo(baseUrl + "/accounts");
+        find("a", withText("Transfer Funds")).click();
+
+        fill("#fromAccountName").with("Checking 1");
+        fill("#toAccountName").with("Checking 2");
+        fill("#amount").with("500");
+        fill("#description").with("Credit Card Payment");
+        find("button", withText("Initiate Transfer")).click();
+
+        assertThat(find(".account").getTexts(), hasItem(containsString("Checking 1 1500")));
+        assertThat(find(".account").getTexts(), hasItem(containsString("Checking 2 4500")));
+    }
+
+    @Test
+    public void shouldValidateNegativeBalance(){
+        createNewAccountWithName("Checking 1");
+        fill("#depositAmount").with("2000");
+        find("button", withText("Deposit")).click();
+        fill("#withdrawAmount").with("2500");
+        find("button", withText("Withdraw")).click();
+        assertThat(find("#error", withText("You Can't Exceed Your Current Balance")), not(empty()));
+    }
+
+    @Test
+    public void shouldValidateNegativeBalanceWhenTransfer(){
+        createNewAccountWithName("Checking 1");
+        fill("#depositAmount").with("2000");
+        find("button", withText("Deposit")).click();
+        createNewAccountWithName("Checking 2");
+        fill("#depositAmount").with("4000");
+
+        find("button", withText("Deposit")).click();
+
+        goTo(baseUrl + "/accounts");
+        find("a", withText("Transfer Funds")).click();
+        fill("#fromAccountName").with("Checking 1");
+        fill("#toAccountName").with("Checking 2");
+        fill("#amount").with("2500");
+        fill("#description").with("Credit Card Payment");
+
+        find("button", withText("Initiate Transfer")).click();
+        assertThat(find("#error", withText("You can't Exceed Your Limit!")), not(empty()));
     }
 
     private void createNewAccountWithName(String name) {

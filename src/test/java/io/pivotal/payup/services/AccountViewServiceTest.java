@@ -9,6 +9,9 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.fail;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 
@@ -72,7 +75,7 @@ public class AccountViewServiceTest {
     }
 
     @Test
-    public void shouldWithdrawAmountFromAccount(){
+    public void shouldWithdrawAmountFromAccount() throws AmountExceedsAccountBalanceException{
         Account account = new Account("Salary");
         when(accountRepository.findOne("Salary")).thenReturn(account);
 
@@ -94,5 +97,19 @@ public class AccountViewServiceTest {
         when(accountRepository.findAll()).thenReturn(accounts);
 
         assertThat(service.getAllAccounts(), equalTo(accounts));
+    }
+
+    @Test(expected=AmountExceedsAccountBalanceException.class)
+    public void shouldRaiseAmountExceedsAccountBalanceException() throws AmountExceedsAccountBalanceException {
+        Account account = new Account("Salary");
+        account.setBalance(20);
+        when(accountRepository.findOne("Salary")).thenReturn(account);
+        try {
+            service.withdrawAmount("Salary", 350);
+        } catch (AmountExceedsAccountBalanceException exception) {
+            assertThat(exception.getMessage(), equalTo("You Can't Exceed Your Current Balance"));
+            throw exception;
+        }
+        fail("No amount exceeds balance exception thrown");
     }
 }

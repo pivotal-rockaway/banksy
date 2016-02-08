@@ -16,6 +16,11 @@ public class Account {
         this.balance = 0;
     }
 
+    public Account(String name,long balance) {
+        this.name = name;
+        this.balance = balance;
+    }
+
     public void setBalance(long balance) {
         this.balance = balance;
     }

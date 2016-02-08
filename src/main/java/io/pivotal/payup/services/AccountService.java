@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private boolean errorFlag = false;
 
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
@@ -37,9 +38,14 @@ public class AccountService {
         return (ArrayList<Account>) accountRepository.findAll();
     }
 
-    public void withdrawAmount(String name, long amount) {
-        Account account =accountRepository.findOne(name);
-        account.setBalance(account.getBalance() - amount);
-        accountRepository.save(account);
+    public void withdrawAmount(String name, long amount) throws AmountExceedsAccountBalanceException {
+        Account account = accountRepository.findOne(name);
+        Long newBalance = account.getBalance() - amount;
+        if (newBalance < 0) {
+            throw new AmountExceedsAccountBalanceException("You Can't Exceed Your Current Balance");
+        } else {
+            account.setBalance(newBalance);
+            accountRepository.save(account);
+        }
     }
 }

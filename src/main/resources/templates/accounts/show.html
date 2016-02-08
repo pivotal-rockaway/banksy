@@ -7,6 +7,7 @@
   <div class="row">
     <div class="well">
       <h2>Account</h2>
+
       <dl class="dl-horizontal">
         <dt>Name</dt>
         <dd th:text="${account.name}"></dd>
@@ -15,6 +16,9 @@
       </dl>
       <dl class="dl-horizontal">
         <form th:action="@{/accounts/{name}/deposit(name=${account.name})}" method="post">
+          <div class="row">
+            <dd id="error" th:text = "${account.errorMessage}"> </dd>
+          </div>
           <div class="form-group">
             <label for="depositAmount">Deposit Amount</label>
             <input  class="form-control" name="amount" id="depositAmount" type="text" placeholder="100.00"/>

@@ -2,18 +2,28 @@ package io.pivotal.payup.web;
 
 import io.pivotal.payup.domain.Account;
 import io.pivotal.payup.services.AccountService;
+import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
 import io.pivotal.payup.web.view.AccountView;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.internal.matchers.LessThan;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 
+import static junit.framework.TestCase.assertNull;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.notNull;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,6 +33,8 @@ public class AccountViewControllerTest {
     @Mock private AccountService service;
     private AccountController controller;
     private final String name = "Savings";
+    private final Long amount =-250L;
+
 
     @Before
     public void setUp() throws Exception {
@@ -61,16 +73,33 @@ public class AccountViewControllerTest {
     }
 
     @Test
-    public void shouldWithdrawAmount() {
+    public void shouldWithdrawAmount() throws AmountExceedsAccountBalanceException {
         when(service.getBalance("Savings")).thenReturn(20L);
 
         ModelAndView modelAndView = controller.withdrawAmount(name, "200");
-        assertThat(modelAndView.getViewName(), equalTo("redirect:/accounts/Savings"));
+        assertThat(modelAndView.getViewName(), equalTo("accounts/show"));
         verify(service).withdrawAmount(name, 200L);
         AccountView accountView = (AccountView) modelAndView.getModel().get("account");
+        assertThat(accountView.getName(), equalTo(name));
+        assertThat(accountView.getBalance(), equalTo(20L));
+        assertNull(accountView.getErrorMessage());
+    }
+
+
+    @Test
+    public void shouldShowErrorWhileWithdrawingMoreThanBalance() throws AmountExceedsAccountBalanceException{
+        when(service.getBalance("Savings")).thenReturn(20L);
+        doThrow(new AmountExceedsAccountBalanceException("You Can't Exceed Your Current Balance")).when(service).withdrawAmount(name, 1000);
+
+        ModelAndView modelAndView = controller.withdrawAmount(name, "1000");
+        assertThat(modelAndView.getViewName(), equalTo("accounts/show"));
+        AccountView accountView = (AccountView) modelAndView.getModel().get("account");
+        assertThat(accountView.getErrorMessage(), equalTo("You Can't Exceed Your Current Balance"));
         assertThat(accountView.getName(),equalTo(name));
         assertThat(accountView.getBalance(),equalTo(20L));
     }
+
+
 
     @Test
     public void shouldListAllAccounts() {
@@ -85,4 +114,5 @@ public class AccountViewControllerTest {
         assertThat(accountViews.get(0).getName(), equalTo("Checking 1"));
         assertThat(accountViews.get(1).getName(), equalTo("Checking 2"));
     }
+
 }

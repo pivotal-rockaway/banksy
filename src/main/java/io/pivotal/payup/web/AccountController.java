@@ -2,6 +2,7 @@ package io.pivotal.payup.web;
 
 import io.pivotal.payup.domain.Account;
 import io.pivotal.payup.services.AccountService;
+import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
 import io.pivotal.payup.web.view.AccountView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,30 +41,36 @@ public class AccountController {
     @RequestMapping(method = GET, value = "/{name}")
     public ModelAndView showAccount(@PathVariable String name) {
         long balance = accountService.getBalance(name);
-        return new ModelAndView("accounts/show", "account", new AccountView(name, balance));
+        return new ModelAndView("accounts/show", "account", new AccountView(name, balance, ""));
     }
 
     @RequestMapping(method = POST, value = "/{name}/deposit")
     public ModelAndView depositAmount(@PathVariable String name, @RequestParam String amount){
         accountService.depositAmount(name, Long.parseLong(amount));
         long balance = accountService.getBalance(name);
-        return new ModelAndView("redirect:/accounts/" + name, "account", new AccountView(name, balance));
+        return new ModelAndView("redirect:/accounts/" + name, "account", new AccountView(name, balance, ""));
     }
 
     @RequestMapping(method = POST, value = "/{name}/withdraw")
-    public  ModelAndView withdrawAmount(@PathVariable String name, @RequestParam String amount){
-        accountService.withdrawAmount(name, Long.parseLong(amount));
-        long balance = accountService.getBalance(name);
-        return new ModelAndView("redirect:/accounts/" + name, "account", new AccountView(name, balance));
+    public  ModelAndView withdrawAmount(@PathVariable String name, @RequestParam String amount) throws AmountExceedsAccountBalanceException{
+        AccountView accountView;
+        try {
+            accountService.withdrawAmount(name, Long.parseLong(amount));
+            accountView = new AccountView(name, accountService.getBalance(name));
+        } catch (AmountExceedsAccountBalanceException exception) {
+            accountView = new AccountView(name, accountService.getBalance(name), exception.getMessage());
+        }
+        return new ModelAndView("accounts/show" , "account", accountView);
     }
 
     @RequestMapping(method = GET, value = "" )
     public ModelAndView listAllAccounts() {
         ArrayList<Account> accounts = (ArrayList<Account>) accountService.getAllAccounts();
         ArrayList<AccountView> accountViews = new ArrayList<AccountView>();
-        for(Account account : accounts){
-            accountViews.add(new AccountView(account.getName(), account.getBalance()));
+        for(Account account : accounts) {
+            accountViews.add(new AccountView(account.getName(), account.getBalance(), ""));
         }
         return  new ModelAndView("accounts/index", "accounts", accountViews);
     }
+
 }

@@ -1,0 +1,31 @@
+
+
+<!DOCTYPE html>
+<html lang="en" layout:decorator="layouts/layout">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <h2>Funds Transfer</h2>
+
+        <form action="/transfers/create" method="post">
+            <div class="row">
+                <dd id="error" th:text = "${accounts.errorMessage}"> </dd>
+            </div>
+            <div class="form-group">
+                <label for="fromAccountName">From Account Name:</label>
+                <input id="fromAccountName" class="form-control" name="fromAccountName" type="text" placeholder="Enter From Account Name"/>
+                <label for="toAccountName">To Account Name:</label>
+                <input id="toAccountName" class="form-control" name="toAccountName" type="text" placeholder="Enter To Account Name"/>
+                <label for="amount">Amount:</label>
+                <input id="amount" class="form-control" name="amount" type="text" placeholder="Enter Amount"/>
+                <label for="description">Description:</label>
+                <input id="description" class="form-control" name="description" type="text" placeholder="Enter Description"/>
+            </div>
+            <button class="btn btn-primary" type="submit">Initiate Transfer</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

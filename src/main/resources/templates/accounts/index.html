@@ -6,6 +6,7 @@
 <div layout:fragment="content">
     <div class="row">
         <p class="account" th:each="accountView : ${accounts}" th:text = "${accountView.name} +  '  ' + ${accountView.balance}"></p>
+        <a href="/transfers/new">Transfer Funds</a>
     </div>
 </div>
 </body>
