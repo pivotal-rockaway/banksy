@@ -15,14 +15,14 @@ public class TransferService {
         this.accountRepository = accountRepository;
     }
 
-    public String initiateTransfer(String fromAccountName, String toAccountName, String amount, String description) {
+    public String initiateTransfer(String fromAccountName, String toAccountName, String amount, String description) throws AmountExceedsAccountBalanceException {
         Account fromAccount = accountRepository.findOne(fromAccountName);
         Account toAcount = accountRepository.findOne(toAccountName);
         long longAmount = Long.parseLong(amount);
         if(fromAccount.getBalance() < longAmount )
-            errorMessage = "You can't Exceed Your Limit!";
+            throw new AmountExceedsAccountBalanceException("You Can't Exceed Your Current Balance");
         else if(longAmount < 0)
-            errorMessage = "Amount can't be negative.";
+            throw new AmountExceedsAccountBalanceException("You Can't Enter a Negative Amount");
         else {
             fromAccount.setBalance(fromAccount.getBalance() - longAmount);
             toAcount.setBalance(toAcount.getBalance() + longAmount);

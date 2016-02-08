@@ -142,7 +142,7 @@ public class AccountsTest extends FluentTest {
         fill("#description").with("Credit Card Payment");
 
         find("button", withText("Initiate Transfer")).click();
-        assertThat(find("#error", withText("You can't Exceed Your Limit!")), not(empty()));
+        assertThat(find("#error", withText("You Can't Exceed Your Current Balance")), not(empty()));
     }
 
     private void createNewAccountWithName(String name) {

@@ -2,6 +2,7 @@ package io.pivotal.payup.web;
 
 import io.pivotal.payup.domain.Account;
 import io.pivotal.payup.services.AccountService;
+import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
 import io.pivotal.payup.services.TransferService;
 import io.pivotal.payup.web.view.AccountView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TransferController {
     private final TransferService transferService;
 
     private final AccountService accountService;
-    private static String message = "";
+
 
     @Autowired
     public TransferController(TransferService transferService,AccountService accountService) {
@@ -38,7 +39,7 @@ public class TransferController {
     public ModelAndView newTransferForm() {
         String name = "";
         Long balance = 0L;
-        return new ModelAndView("/transfers/new", "accounts", new AccountView(name, balance, message));
+        return new ModelAndView("/transfers/new", "accounts", new AccountView(name, balance));
 
     }
 
@@ -47,16 +48,21 @@ public class TransferController {
     @RequestMapping(value = "create", method = POST)
     public ModelAndView createTransfer(@RequestParam String fromAccountName,
                                  @RequestParam String toAccountName,
-                                 @RequestParam String amount, @RequestParam String description) {
-        message = transferService.initiateTransfer(fromAccountName, toAccountName, amount, description);
-        ArrayList<Account> accounts = (ArrayList<Account>) accountService.getAllAccounts();
-        ArrayList<AccountView> accountViews = new ArrayList<AccountView>();
-        for(Account account : accounts){
-            accountViews.add(new AccountView(account.getName(), account.getBalance(),message));
+                                 @RequestParam String amount, @RequestParam String description) throws AmountExceedsAccountBalanceException {
+        ArrayList<AccountView> accountViews =null;
+        ArrayList<Account> accounts;
+        try {
+            transferService.initiateTransfer(fromAccountName, toAccountName, amount, description);
+            accounts = (ArrayList<Account>) accountService.getAllAccounts();
+            accountViews = new ArrayList<AccountView>();
+            for (Account account : accounts) {
+                accountViews.add(new AccountView(account.getName(), account.getBalance()));
+            }
         }
-        if(message !=null && !message.equalsIgnoreCase(""))
-            return new ModelAndView("redirect:/transfers/new","accounts",accountViews);
-        else
-            return new ModelAndView("redirect:/accounts","accounts",accountViews);
+        catch (AmountExceedsAccountBalanceException exception){
+            return new ModelAndView("/transfers/new","accounts",new AccountView(fromAccountName,Long.parseLong(amount),exception.getMessage()));
+        }
+
+       return new ModelAndView("redirect:/accounts","accounts",accountViews);
     }
 }
