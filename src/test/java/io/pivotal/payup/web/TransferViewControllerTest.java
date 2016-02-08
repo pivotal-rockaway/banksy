@@ -31,8 +31,6 @@ public class TransferViewControllerTest {
 
     @Mock
     private TransferService service;
-    @Mock
-    private AccountService accountService;
     private TransferController controller;
 
     private final String fromAccountName = "Checking 1";
@@ -43,7 +41,7 @@ public class TransferViewControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        controller = new TransferController(service, accountService);
+        controller = new TransferController(service);
     }
 
 
@@ -69,8 +67,9 @@ public class TransferViewControllerTest {
 
         doThrow(new AmountExceedsAccountBalanceException("You Can't Exceed Your Current Balance")).when(service).initiateTransfer(fromAccountName, toAccountName, amount, description);
          ModelAndView modelAndView = controller.createTransfer(fromAccountName, toAccountName, amount, description);
-        AccountView accountView = (AccountView) modelAndView.getModel().get("accounts");
-        assertThat(accountView.getErrorMessage(), equalTo("You Can't Exceed Your Current Balance"));
+        String errorMessage = (String) modelAndView.getModel().get("errorMessage");
+
+        assertThat(errorMessage, equalTo("You Can't Exceed Your Current Balance"));
 
     }
 }

@@ -23,46 +23,30 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @RequestMapping("/transfers")
 public class TransferController {
-
     private final TransferService transferService;
 
-    private final AccountService accountService;
-
-
     @Autowired
-    public TransferController(TransferService transferService,AccountService accountService) {
+    public TransferController(TransferService transferService) {
         this.transferService = transferService;
-        this.accountService = accountService;
     }
 
     @RequestMapping(value = "new", method = GET)
     public ModelAndView newTransferForm() {
-        String name = "";
-        Long balance = 0L;
-        return new ModelAndView("/transfers/new", "accounts", new AccountView(name, balance));
-
+        return new ModelAndView("/transfers/new");
     }
-
-
 
     @RequestMapping(value = "create", method = POST)
     public ModelAndView createTransfer(@RequestParam String fromAccountName,
                                  @RequestParam String toAccountName,
                                  @RequestParam String amount, @RequestParam String description) throws AmountExceedsAccountBalanceException {
         ArrayList<AccountView> accountViews =null;
-        ArrayList<Account> accounts;
         try {
             transferService.initiateTransfer(fromAccountName, toAccountName, amount, description);
-            accounts = (ArrayList<Account>) accountService.getAllAccounts();
-            accountViews = new ArrayList<AccountView>();
-            for (Account account : accounts) {
-                accountViews.add(new AccountView(account.getName(), account.getBalance()));
-            }
         }
         catch (AmountExceedsAccountBalanceException exception){
-            return new ModelAndView("/transfers/new","accounts",new AccountView(fromAccountName,Long.parseLong(amount),exception.getMessage()));
+            return new ModelAndView("/transfers/new","errorMessage", exception.getMessage());
         }
 
-       return new ModelAndView("redirect:/accounts","accounts",accountViews);
+       return new ModelAndView("redirect:/accounts");
     }
 }
