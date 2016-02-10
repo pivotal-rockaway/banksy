@@ -4,6 +4,7 @@ import io.pivotal.payup.domain.Account;
 import io.pivotal.payup.persistence.AccountRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AccountService {
     private final AccountRepository accountRepository;
@@ -35,7 +36,7 @@ public class AccountService {
         return accountRepository.findOne(name);
     }
 
-    public ArrayList<Account> getAllAccounts() {
+    public List<Account> getAllAccounts() {
         return (ArrayList<Account>) accountRepository.findAll();
     }
 

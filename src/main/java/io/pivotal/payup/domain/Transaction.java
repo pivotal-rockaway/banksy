@@ -10,13 +10,14 @@ public class Transaction {
     @GeneratedValue
     private Long id;
 
-    public String accountName;
-    public String transType;
-    public String transDesc;
-    public Long   transAmount;
-    public Long   availBalance;
+    private String accountName;
+    private String transType;
+    private String transDesc;
+    private Long   transAmount;
+    private Long   availBalance;
 
     public Transaction() {
+        //an empty constructor
     }
 
     public Transaction(String accountName, String transType, String transDesc,
