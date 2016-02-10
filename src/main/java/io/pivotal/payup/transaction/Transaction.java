@@ -1,4 +1,4 @@
-package io.pivotal.payup.domain;
+package io.pivotal.payup.transaction;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

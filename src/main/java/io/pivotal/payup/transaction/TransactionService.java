@@ -1,7 +1,4 @@
-package io.pivotal.payup.services;
-
-import io.pivotal.payup.domain.Transaction;
-import io.pivotal.payup.persistence.TransactionRepository;
+package io.pivotal.payup.transaction;
 
 import java.util.List;
 
@@ -11,9 +8,8 @@ public class TransactionService {
     public TransactionService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
-
-
-     public List<Transaction> getTransactions(String accountName){
+    
+    public List<Transaction> getTransactions(String accountName){
         return transactionRepository.findByAccountName(accountName);
     }
 

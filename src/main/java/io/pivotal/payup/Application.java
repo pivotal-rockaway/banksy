@@ -1,10 +1,10 @@
 package io.pivotal.payup;
 
-import io.pivotal.payup.persistence.AccountRepository;
-import io.pivotal.payup.persistence.TransactionRepository;
-import io.pivotal.payup.services.AccountService;
-import io.pivotal.payup.services.TransactionService;
-import io.pivotal.payup.services.TransferService;
+import io.pivotal.payup.account.AccountRepository;
+import io.pivotal.payup.transaction.TransactionRepository;
+import io.pivotal.payup.account.AccountService;
+import io.pivotal.payup.transaction.TransactionService;
+import io.pivotal.payup.transfer.TransferService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;

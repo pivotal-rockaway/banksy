@@ -1,7 +1,6 @@
-package io.pivotal.payup.web;
+package io.pivotal.payup.transfer;
 
-import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
-import io.pivotal.payup.services.TransferService;
+import io.pivotal.payup.exceptions.AmountExceedsAccountBalanceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

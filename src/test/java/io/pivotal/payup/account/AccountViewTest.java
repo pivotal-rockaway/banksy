@@ -1,4 +1,4 @@
-package io.pivotal.payup.domain;
+package io.pivotal.payup.account;
 
 import org.junit.Test;
 

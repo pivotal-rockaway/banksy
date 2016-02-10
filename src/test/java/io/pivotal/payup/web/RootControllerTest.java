@@ -1,5 +1,6 @@
 package io.pivotal.payup.web;
 
+import io.pivotal.payup.RootController;
 import org.junit.Before;
 import org.junit.Test;
 

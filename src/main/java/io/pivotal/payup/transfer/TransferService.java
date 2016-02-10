@@ -1,7 +1,9 @@
-package io.pivotal.payup.services;
+package io.pivotal.payup.transfer;
 
-import io.pivotal.payup.domain.Account;
-import io.pivotal.payup.persistence.AccountRepository;
+import io.pivotal.payup.account.Account;
+import io.pivotal.payup.account.AccountRepository;
+import io.pivotal.payup.exceptions.AmountExceedsAccountBalanceException;
+import io.pivotal.payup.transaction.TransactionService;
 
 public class TransferService {
     private final AccountRepository accountRepository;

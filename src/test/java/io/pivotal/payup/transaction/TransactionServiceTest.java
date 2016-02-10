@@ -1,7 +1,5 @@
-package io.pivotal.payup.services;
+package io.pivotal.payup.transaction;
 
-import io.pivotal.payup.domain.Transaction;
-import io.pivotal.payup.persistence.TransactionRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

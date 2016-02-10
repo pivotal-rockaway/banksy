@@ -1,20 +1,12 @@
-package io.pivotal.payup.web;
+package io.pivotal.payup.transfer;
 
-import io.pivotal.payup.domain.Account;
-import io.pivotal.payup.services.AccountService;
-import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
-import io.pivotal.payup.services.TransferService;
-import io.pivotal.payup.web.view.AccountView;
-import org.fluentlenium.adapter.FluentTest;
-import org.hibernate.mapping.List;
+import io.pivotal.payup.account.Account;
+import io.pivotal.payup.exceptions.AmountExceedsAccountBalanceException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -23,10 +15,9 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TransferViewControllerTest {
+public class TransferControllerTest {
 
     @Mock
     private TransferService service;
@@ -45,19 +36,19 @@ public class TransferViewControllerTest {
     @Test
     public void shouldShowNewTransferForm() {
         ModelAndView modelAndView = controller.newTransferForm();
-        AccountView accountView = (AccountView) modelAndView.getModel().get("account");
         assertThat(modelAndView.getViewName(), equalTo("/transfers/new"));
     }
 
     @Test
     public void shouldRedirectToAccountsIndexPageWhenTransferInitiated() throws AmountExceedsAccountBalanceException {
-        ModelAndView modelAndView = controller.createTransfer(fromAccountName, toAccountName, amount, description);
+        controller.createTransfer(fromAccountName, toAccountName, amount, description);
+
         verify(service).initiateTransfer(fromAccountName, toAccountName, amount, description);
     }
 
     @Test
     public void shouldCheckNegativeBalanceTransfer() throws AmountExceedsAccountBalanceException {
-        ArrayList<Account> accounts = new ArrayList<Account>();
+        ArrayList<Account> accounts = new ArrayList<>();
         accounts.add(new Account("Checking 1", 500L));
         accounts.add(new Account("Checking 2", 1000L));
 
@@ -66,6 +57,5 @@ public class TransferViewControllerTest {
         String errorMessage = (String) modelAndView.getModel().get("errorMessage");
 
         assertThat(errorMessage, equalTo("You Can't Exceed Your Current Balance"));
-
     }
 }

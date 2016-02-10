@@ -1,7 +1,9 @@
-package io.pivotal.payup.services;
+package io.pivotal.payup.transfer;
 
-import io.pivotal.payup.domain.Account;
-import io.pivotal.payup.persistence.AccountRepository;
+import io.pivotal.payup.account.Account;
+import io.pivotal.payup.account.AccountRepository;
+import io.pivotal.payup.exceptions.AmountExceedsAccountBalanceException;
+import io.pivotal.payup.transaction.TransactionService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,9 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TransferServiceTest {
 

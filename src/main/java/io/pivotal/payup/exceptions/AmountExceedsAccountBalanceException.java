@@ -1,4 +1,4 @@
-package io.pivotal.payup.services;
+package io.pivotal.payup.exceptions;
 
 public class AmountExceedsAccountBalanceException extends Exception {
 

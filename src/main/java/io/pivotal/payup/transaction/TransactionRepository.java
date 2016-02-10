@@ -1,6 +1,5 @@
-package io.pivotal.payup.persistence;
+package io.pivotal.payup.transaction;
 
-import io.pivotal.payup.domain.Transaction;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

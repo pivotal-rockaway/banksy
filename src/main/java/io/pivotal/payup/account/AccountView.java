@@ -1,4 +1,4 @@
-package io.pivotal.payup.web.view;
+package io.pivotal.payup.account;
 
 public class AccountView {
 

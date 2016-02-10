@@ -1,9 +1,6 @@
-package io.pivotal.payup.web;
+package io.pivotal.payup.account;
 
-import io.pivotal.payup.domain.Account;
-import io.pivotal.payup.services.AccountService;
-import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
-import io.pivotal.payup.web.view.AccountView;
+import io.pivotal.payup.exceptions.AmountExceedsAccountBalanceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

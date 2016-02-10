@@ -1,9 +1,6 @@
-package io.pivotal.payup.web;
+package io.pivotal.payup.account;
 
-import io.pivotal.payup.domain.Account;
-import io.pivotal.payup.services.AccountService;
-import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
-import io.pivotal.payup.web.view.AccountView;
+import io.pivotal.payup.exceptions.AmountExceedsAccountBalanceException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,12 +13,10 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.assertNull;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AccountViewControllerTest {
+public class AccountControllerTest {
 
     @Mock private AccountService service;
     private AccountController controller;

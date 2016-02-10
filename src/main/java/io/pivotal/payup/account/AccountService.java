@@ -1,7 +1,7 @@
-package io.pivotal.payup.services;
+package io.pivotal.payup.account;
 
-import io.pivotal.payup.domain.Account;
-import io.pivotal.payup.persistence.AccountRepository;
+import io.pivotal.payup.exceptions.AmountExceedsAccountBalanceException;
+import io.pivotal.payup.transaction.TransactionService;
 
 import java.util.ArrayList;
 import java.util.List;
