@@ -9,7 +9,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
-
+apply plugin: "sonar-runner"
 version = '1.0'
 
 repositories {
