@@ -7,14 +7,12 @@ public class TransferService {
     private final AccountRepository accountRepository;
     private final TransactionService transactionService;
 
-    private String errorMessage = "";
-
     public TransferService(AccountRepository accountRepository, TransactionService transactionService) {
         this.accountRepository = accountRepository;
         this.transactionService = transactionService;
     }
 
-    public String initiateTransfer(String fromAccountName, String toAccountName, String amount, String description) throws AmountExceedsAccountBalanceException {
+    public void initiateTransfer(String fromAccountName, String toAccountName, String amount, String description) throws AmountExceedsAccountBalanceException {
         Account fromAccount = accountRepository.findOne(fromAccountName);
         Account toAccount = accountRepository.findOne(toAccountName);
         long longAmount = Long.parseLong(amount);
@@ -32,8 +30,6 @@ public class TransferService {
             accountRepository.save(toAccount);
             transactionService.createTransaction(fromAccountName,"Withdraw","",longAmount,newFromAccountBalance);
             transactionService.createTransaction(toAccountName,"Deposit","",longAmount,newToAccountBalance);
-
         }
-        return errorMessage;
     }
 }

@@ -4,6 +4,8 @@ import io.pivotal.payup.domain.Account;
 import io.pivotal.payup.services.AccountService;
 import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
 import io.pivotal.payup.web.view.AccountView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class AccountController {
 
     private final AccountService accountService;
+    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
     public AccountController(AccountService accountService) {
@@ -58,6 +61,7 @@ public class AccountController {
             accountService.withdrawAmount(name, Long.parseLong(amount));
             accountView = new AccountView(name, accountService.getBalance(name));
         } catch (AmountExceedsAccountBalanceException exception) {
+            logger.error(exception.getMessage(), exception);
             accountView = new AccountView(name, accountService.getBalance(name), exception.getMessage());
         }
         return new ModelAndView("accounts/show" , "account", accountView);

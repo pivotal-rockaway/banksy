@@ -3,6 +3,8 @@ package io.pivotal.payup.web;
 import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
 import io.pivotal.payup.services.TransferService;
 import io.pivotal.payup.web.view.AccountView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/transfers")
 public class TransferController {
     private final TransferService transferService;
+    private final Logger logger = LoggerFactory.getLogger(TransferController.class);
 
     @Autowired
     public TransferController(TransferService transferService) {
@@ -38,6 +41,7 @@ public class TransferController {
             transferService.initiateTransfer(fromAccountName, toAccountName, amount, description);
         }
         catch (AmountExceedsAccountBalanceException exception){
+            logger.info(exception.getMessage(), exception);
             return new ModelAndView("/transfers/new","errorMessage", exception.getMessage());
         }
 
