@@ -33,8 +33,6 @@ public class AccountViewControllerTest {
     @Mock private AccountService service;
     private AccountController controller;
     private final String name = "Savings";
-    private final Long amount =-250L;
-
 
     @Before
     public void setUp() throws Exception {

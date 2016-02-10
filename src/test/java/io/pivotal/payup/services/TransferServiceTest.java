@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -17,6 +18,7 @@ public class TransferServiceTest {
 
     @Mock private AccountRepository accountRepository;
     private TransferService transferService;
+    private TransactionService transactionService;
 
     private final String fromAccountName = "Checking 1";
     private final String toAccountName = "Checking 2";
@@ -26,8 +28,8 @@ public class TransferServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-
-        transferService = new TransferService(accountRepository);
+        transactionService = Mockito.mock(TransactionService.class);
+        transferService = new TransferService(accountRepository, transactionService);
     }
 
     @Test
@@ -50,6 +52,25 @@ public class TransferServiceTest {
         verify(accountRepository).save(toAccount);
     }
 
+    @Test
+    public void shouldCreateTransactionForTransfer() throws  Exception{
+        Account fromAccount = mock(Account.class);
+        when(accountRepository.findOne(fromAccountName)).thenReturn(fromAccount);
+
+        Account toAccount = mock(Account.class);
+        when(accountRepository.findOne(toAccountName)).thenReturn(toAccount);
+
+        when(fromAccount.getBalance()).thenReturn(1000L);
+        when(toAccount.getBalance()).thenReturn(0L);
+
+        transferService.initiateTransfer(fromAccountName, toAccountName, amount, description);
+        verify(transactionService).createTransaction(fromAccountName,
+                "Withdraw","",Long.parseLong(amount),750L);
+        verify(transactionService).createTransaction(toAccountName,
+                "Deposit","",Long.parseLong(amount),250L);
+
+    }
+
     @Test(expected=AmountExceedsAccountBalanceException.class)
     public void shouldRaiseExceedAccountBalanceException() throws AmountExceedsAccountBalanceException{
 
@@ -69,6 +90,8 @@ public class TransferServiceTest {
            Assert.assertThat(exception.getMessage(), equalTo("You Can't Exceed Your Current Balance"));
            throw exception;
         }
+
+
     }
 
 

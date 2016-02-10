@@ -1,7 +1,5 @@
 package io.pivotal.payup.web;
 
-import io.pivotal.payup.domain.Account;
-import io.pivotal.payup.services.AccountService;
 import io.pivotal.payup.services.AmountExceedsAccountBalanceException;
 import io.pivotal.payup.services.TransferService;
 import io.pivotal.payup.web.view.AccountView;
@@ -15,10 +13,6 @@ import java.util.ArrayList;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
-/**
- * Created by pivotal on 2/3/16.
- */
 
 @Controller
 @RequestMapping("/transfers")
@@ -49,4 +43,5 @@ public class TransferController {
 
        return new ModelAndView("redirect:/accounts");
     }
+
 }

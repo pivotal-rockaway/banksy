@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+
+    <table>
+        <div:block th:each="transaction : ${transactions}">
+        <tr >
+
+            <td th:text="${transaction.transactionType}"></td>
+            <td th:text="${transaction.transactionAmount}"></td>
+        </tr>
+        </div:block>
+    </table>
+
+</body>
+</html>

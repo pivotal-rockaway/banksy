@@ -2,7 +2,6 @@ package io.pivotal.payup.acceptancetests;
 
 import io.pivotal.payup.Application;
 import org.fluentlenium.adapter.FluentTest;
-import org.fluentlenium.core.annotation.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,7 +64,7 @@ public class AccountsTest extends FluentTest {
     }
 
     @Test
-    public void shouldWithdrawAmountFromAccount(){
+    public void shouldWithdrawAmountFromAccount() {
         createNewAccountWithName("Nick");
 
         fill("#depositAmount").with("200");
@@ -73,12 +72,12 @@ public class AccountsTest extends FluentTest {
         fill("#withdrawAmount").with("20");
         find("button", withText("Withdraw")).click();
 
-        assertThat(find("dd",withText("180")), not(empty()));
+        assertThat(find("dd", withText("180")), not(empty()));
         find("button", withText("Deposit")).click();
     }
 
     @Test
-    public void shouldListAllAccounts(){
+    public void shouldListAllAccounts() {
         createNewAccountWithName("Checking 1");
         createNewAccountWithName("Checking 2");
         createNewAccountWithName("Checking 3");
@@ -93,7 +92,7 @@ public class AccountsTest extends FluentTest {
     }
 
     @Test
-    public void shouldTransferBetweenAccounts(){
+    public void shouldTransferBetweenAccounts() {
         createNewAccountWithName("Checking 1");
         fill("#depositAmount").with("2000");
         find("button", withText("Deposit")).click();
@@ -115,7 +114,7 @@ public class AccountsTest extends FluentTest {
     }
 
     @Test
-    public void shouldValidateNegativeBalance(){
+    public void shouldValidateNegativeBalance() {
         createNewAccountWithName("Checking 1");
         fill("#depositAmount").with("2000");
         find("button", withText("Deposit")).click();
@@ -125,7 +124,7 @@ public class AccountsTest extends FluentTest {
     }
 
     @Test
-    public void shouldValidateNegativeBalanceWhenTransfer(){
+    public void shouldValidateNegativeBalanceWhenTransfer() {
         createNewAccountWithName("Checking 1");
         fill("#depositAmount").with("2000");
         find("button", withText("Deposit")).click();
@@ -145,6 +144,36 @@ public class AccountsTest extends FluentTest {
         assertThat(find("#error", withText("You Can't Exceed Your Current Balance")), not(empty()));
     }
 
+
+    @Test
+    public void shouldShowAllTransactionsForAnAccount() {
+        createNewAccountWithName("Checking");
+        fill("#depositAmount").with("2000");
+        find("button", withText("Deposit")).click();
+
+        fill("#withdrawAmount").with("1000");
+        find("button", withText("Withdraw")).click();
+
+        createNewAccountWithName("Savings");
+        fill("#depositAmount").with("1000");
+        find("button", withText("Deposit")).click();
+
+        goTo(baseUrl + "/accounts");
+        find("a", withText("Transfer Funds")).click();
+
+        fill("#fromAccountName").with("Checking");
+        fill("#toAccountName").with("Savings");
+        fill("#amount").with("500");
+        fill("#description").with("Credit Card Payment");
+        find("button", withText("Initiate Transfer")).click();
+
+        goTo(baseUrl + "/Checking/transactions");
+
+        assertThat(find("tr", withText("Deposit 2000")), not(empty()));
+        assertThat(find("tr", withText("Withdraw 1000")), not(empty()));
+        assertThat(find("tr", withText("Withdraw 500")), not(empty()));
+    }
+
     private void createNewAccountWithName(String name) {
         goTo(baseUrl + "/accounts/new");
         fill("#newAccountName").with(name);
@@ -152,7 +181,7 @@ public class AccountsTest extends FluentTest {
     }
 
     @Override
-    public WebDriver getDefaultDriver(){
+    public WebDriver getDefaultDriver() {
         System.setProperty("webdriver.chrome.driver", "/Applications/chromedriver");
         return new ChromeDriver();
     }

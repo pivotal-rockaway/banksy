@@ -8,10 +8,12 @@ import java.util.ArrayList;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final TransactionService transactionService;
     private boolean errorFlag = false;
 
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, TransactionService transactionService) {
         this.accountRepository = accountRepository;
+        this.transactionService = transactionService;
     }
 
     public void createAccount(String name) {
@@ -28,6 +30,7 @@ public class AccountService {
         Account account = accountRepository.findOne(name);
         account.setBalance(account.getBalance() + amount);
         accountRepository.save(account);
+        transactionService.createTransaction(name,"Deposit","",amount,account.getBalance());
     }
 
     public Account getAccount(String name) {
@@ -46,6 +49,7 @@ public class AccountService {
         } else {
             account.setBalance(newBalance);
             accountRepository.save(account);
+            transactionService.createTransaction(name,"Withdraw", "", amount, account.getBalance());
         }
     }
 }

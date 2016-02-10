@@ -1,7 +1,9 @@
 package io.pivotal.payup;
 
 import io.pivotal.payup.persistence.AccountRepository;
+import io.pivotal.payup.persistence.TransactionRepository;
 import io.pivotal.payup.services.AccountService;
+import io.pivotal.payup.services.TransactionService;
 import io.pivotal.payup.services.TransferService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -19,14 +21,20 @@ public class Application {
     }
 
     @Bean
-    public AccountService accountService(AccountRepository accountRepository) {
-        return new AccountService(accountRepository);
+    public AccountService accountService(AccountRepository accountRepository,TransactionService transactionService) {
+        return new AccountService(accountRepository,transactionService);
+
     }
 
     @Bean
-    public TransferService transferService(AccountRepository accountRepository)
+    public TransferService transferService(AccountRepository accountRepository,TransactionService transactionService)
     {
-        return new TransferService(accountRepository);
+        return new TransferService(accountRepository, transactionService);
+    }
+
+    @Bean
+    public TransactionService transactionService(TransactionRepository transactionRepository){
+        return new TransactionService(transactionRepository);
     }
 
 }

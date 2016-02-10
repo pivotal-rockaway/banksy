@@ -8,9 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -23,11 +21,14 @@ public class TransferServiceIntegrationTest {
     private AccountRepository accountRepository;
 
     private TransferService transferService;
+    @Autowired
+    private TransactionService transactionService;
 
     @Before
     public void setUp() throws Exception {
         accountRepository.deleteAll();
-        transferService = new TransferService(accountRepository);
+
+        transferService = new TransferService(accountRepository, transactionService);
     }
 
     @Test
