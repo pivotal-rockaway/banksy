@@ -25,7 +25,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class TransferViewControllerTest {
 
@@ -38,12 +37,10 @@ public class TransferViewControllerTest {
     private final String amount = "1000";
     private final String description = "Credit Card Bill";
 
-
     @Before
     public void setUp() throws Exception {
         controller = new TransferController(service);
     }
-
 
     @Test
     public void shouldShowNewTransferForm() {
@@ -63,7 +60,6 @@ public class TransferViewControllerTest {
         ArrayList<Account> accounts = new ArrayList<Account>();
         accounts.add(new Account("Checking 1", 500L));
         accounts.add(new Account("Checking 2", 1000L));
-
 
         doThrow(new AmountExceedsAccountBalanceException("You Can't Exceed Your Current Balance")).when(service).initiateTransfer(fromAccountName, toAccountName, amount, description);
          ModelAndView modelAndView = controller.createTransfer(fromAccountName, toAccountName, amount, description);

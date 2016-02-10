@@ -65,9 +65,9 @@ public class TransferServiceTest {
 
         transferService.initiateTransfer(fromAccountName, toAccountName, amount, description);
         verify(transactionService).createTransaction(fromAccountName,
-                "Withdraw","",Long.parseLong(amount),750L);
+                "Withdraw",description,Long.parseLong(amount),750L);
         verify(transactionService).createTransaction(toAccountName,
-                "Deposit","",Long.parseLong(amount),250L);
+                "Deposit",description,Long.parseLong(amount),250L);
 
     }
 

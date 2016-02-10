@@ -69,8 +69,8 @@ public class AccountController {
 
     @RequestMapping(method = GET, value = "" )
     public ModelAndView listAllAccounts() {
-        ArrayList<Account> accounts = (ArrayList<Account>) accountService.getAllAccounts();
-        ArrayList<AccountView> accountViews = new ArrayList<AccountView>();
+        ArrayList<Account> accounts = accountService.getAllAccounts();
+        ArrayList<AccountView> accountViews = new ArrayList<>();
         for(Account account : accounts) {
             accountViews.add(new AccountView(account.getName(), account.getBalance(), ""));
         }

@@ -6,10 +6,8 @@ import io.pivotal.payup.persistence.AccountRepository;
 import java.util.ArrayList;
 
 public class AccountService {
-
     private final AccountRepository accountRepository;
     private final TransactionService transactionService;
-    private boolean errorFlag = false;
 
     public AccountService(AccountRepository accountRepository, TransactionService transactionService) {
         this.accountRepository = accountRepository;

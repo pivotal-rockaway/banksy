@@ -28,8 +28,8 @@ public class TransferService {
 
             accountRepository.save(fromAccount);
             accountRepository.save(toAccount);
-            transactionService.createTransaction(fromAccountName,"Withdraw","",longAmount,newFromAccountBalance);
-            transactionService.createTransaction(toAccountName,"Deposit","",longAmount,newToAccountBalance);
+            transactionService.createTransaction(fromAccountName,"Withdraw",description,longAmount,newFromAccountBalance);
+            transactionService.createTransaction(toAccountName,"Deposit",description,longAmount,newToAccountBalance);
         }
     }
 }
