@@ -24,7 +24,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class AccountController {
 
     private final AccountService accountService;
-    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
     public AccountController(AccountService accountService) {
@@ -62,7 +62,7 @@ public class AccountController {
             accountService.withdrawAmount(name, Long.parseLong(amount));
             accountView = new AccountView(name, accountService.getBalance(name));
         } catch (AmountExceedsAccountBalanceException exception) {
-            logger.error(exception.getMessage(), exception);
+            LOGGER.error(exception.getMessage(), exception);
             accountView = new AccountView(name, accountService.getBalance(name), exception.getMessage());
         }
         return new ModelAndView("accounts/show" , "account", accountView);

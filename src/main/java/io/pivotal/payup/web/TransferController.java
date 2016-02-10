@@ -17,7 +17,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/transfers")
 public class TransferController {
     private final TransferService transferService;
-    private final Logger logger = LoggerFactory.getLogger(TransferController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransferController.class);
 
     @Autowired
     public TransferController(TransferService transferService) {
@@ -38,7 +38,7 @@ public class TransferController {
             transferService.initiateTransfer(fromAccountName, toAccountName, amount, description);
         }
         catch (AmountExceedsAccountBalanceException exception){
-            logger.info(exception.getMessage(), exception);
+            LOGGER.info(exception.getMessage(), exception);
             return new ModelAndView("/transfers/new","errorMessage", exception.getMessage());
         }
 

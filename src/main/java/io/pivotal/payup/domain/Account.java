@@ -5,11 +5,13 @@ import javax.persistence.Id;
 
 @Entity
 public class Account {
-
     @Id
     private String name;
 
     private long balance;
+
+    protected Account() {
+    }
 
     public Account(String name) {
         this.name = name;
@@ -23,10 +25,6 @@ public class Account {
 
     public void setBalance(long balance) {
         this.balance = balance;
-    }
-
-    /** Needed for Spring JPA */
-    protected Account() {
     }
 
     public String getName() {
